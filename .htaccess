@@ -1,0 +1,18 @@
+# Quando não tiver index na pasta acessada dá Forbidden
+Options -Indexes
+
+# LIGA O REWRITE ENGINE
+RewriteEngine on
+
+# F é a tag que bloqueia o acesso à url
+# NC é a tag que faz ser no-case (case-insensitive)
+#QSA é a tag que permite usar GET no uri mesmo redirecionando pelo htaccess (só vai passar GET assim)
+
+# Aqui se o uri tiver api/* coloca um GET['l'] com 'oi' dentro
+RewriteRule ^api/([a-z0-9]+)/?$ ./loja?l=oi [NC,QSA]
+
+# Se não é um arquivo que existe, manda pra index
+# Se ele não é um arquivo nem uma pasta que existe e encaixou no rewrite acima, o GET dele vai ser incorporado no destino desse rewrite abaixo
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ ./index.php?=oi [NC,QSA]
